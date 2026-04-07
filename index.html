@@ -14,7 +14,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #0078d4 0%, #50e6ff 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -44,7 +44,7 @@
         }
 
         h1 {
-            color: #333;
+            color: #0078d4;
             font-size: 32px;
             margin-bottom: 16px;
             font-weight: 600;
@@ -63,7 +63,7 @@
         }
 
         .info-section h2 {
-            color: #1e3a8a;
+            color: #0078d4;
             font-size: 20px;
             margin-bottom: 12px;
             font-weight: 600;
@@ -80,6 +80,7 @@
             padding: 20px;
             border-radius: 8px;
             margin: 24px 0;
+            border-left: 4px solid #0078d4;
         }
 
         .specs ul {
@@ -94,11 +95,22 @@
         }
 
         .specs li:before {
-            content: "▪";
-            color: #3b82f6;
+            content: "●";
+            color: #0078d4;
             font-weight: bold;
             margin-right: 12px;
-            font-size: 20px;
+            font-size: 18px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #0078d4;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 2px;
         }
 
         .links {
@@ -111,7 +123,7 @@
         .links a {
             display: inline-block;
             padding: 12px 24px;
-            background: #3b82f6;
+            background: #0078d4;
             color: white;
             text-decoration: none;
             border-radius: 6px;
@@ -120,9 +132,9 @@
         }
 
         .links a:hover {
-            background: #2563eb;
+            background: #005a9e;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4);
         }
 
         .status {
@@ -135,6 +147,15 @@
             font-weight: 500;
         }
 
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #c41e3a;
+            font-size: 14px;
+        }
+
         footer {
             margin-top: 40px;
             padding-top: 24px;
@@ -142,6 +163,13 @@
             text-align: center;
             color: #888;
             font-size: 14px;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 12px 0;
         }
 
         @media (max-width: 768px) {
@@ -156,59 +184,89 @@
             .subtitle {
                 font-size: 16px;
             }
+
+            .specs li {
+                flex-wrap: wrap;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Jitendra's Home Lab Server</h1>
-        <p class="subtitle">Professional Linux Web Server on VirtualBox</p>
+        <p class="subtitle">Professional Windows Server with IIS Web Hosting</p>
 
         <div class="info-section">
             <h2>Server Status: <span class="status">Online</span></h2>
-            <p>This website is powered by <strong>Nginx</strong> running on <strong>Ubuntu Linux</strong> inside <strong>VirtualBox</strong> on an Intel Core i3 10th Generation processor.</p>
+            <p>This website is hosted on <strong>Internet Information Services (IIS)</strong> running on <strong>Windows Server</strong> inside a virtual machine on an Intel Core i3 10th Generation processor.</p>
         </div>
 
         <div class="specs">
             <h2>System Specifications</h2>
             <ul>
                 <li><strong>Host Device:</strong> Infinix X1 Laptop</li>
-                <li><strong>Host Processor:</strong> Intel Core i3 (10th Gen)</li>
+                <li><strong>Host Processor:</strong> Intel Core i3 (10th Generation)</li>
                 <li><strong>Host Memory:</strong> 8GB RAM</li>
-                <li><strong>Host OS:</strong> Windows 10/11</li>
-                <li><strong>Virtualization Platform:</strong> VirtualBox</li>
-                <li><strong>Guest OS:</strong> Ubuntu Server 22.04 LTS</li>
-                <li><strong>VM Memory Allocation:</strong> 2GB RAM</li>
-                <li><strong>Web Server:</strong> Nginx</li>
-                <li><strong>Storage:</strong> 20GB dynamic virtual disk</li>
+                <li><strong>Host OS:</strong> Windows Server</li>
+                <li><strong>Virtual Machine:</strong> Windows Server 2019/2022</li>
+                <li><strong>VM Memory:</strong> 2GB RAM (allocated)</li>
+                <li><strong>Web Server:</strong> IIS (Internet Information Services)</li>
+                <li><strong>Storage:</strong> 40GB dynamic virtual disk</li>
+                <li><strong>.NET Framework:</strong> 4.8+</li>
             </ul>
         </div>
 
         <div class="info-section">
+            <h2>Technology Stack</h2>
+            <div class="tech-stack">
+                <span class="badge">Windows Server</span>
+                <span class="badge">IIS</span>
+                <span class="badge">PowerShell</span>
+                <span class="badge">HTML5</span>
+                <span class="badge">CSS3</span>
+                <span class="badge">Hyper-V</span>
+            </div>
+        </div>
+
+        <div class="info-section">
             <h2>About This Project</h2>
-            <p>This home lab demonstrates how to build a professional web server environment using VirtualBox virtualization. The VM provides complete control over network configuration, storage, and system resources while maintaining efficient performance on modest hardware.</p>
+            <p>This home lab demonstrates enterprise-grade web server hosting using Windows Server and IIS. The solution showcases professional web hosting capabilities with active directory integration, group policies, security features, and enterprise scalability.</p>
         </div>
 
         <div class="info-section">
             <h2>Network Access</h2>
             <p><strong>To access this website from your host machine:</strong></p>
+            <ul style="list-style: none; margin: 12px 0; padding: 12px; background: #f8f9fa; border-radius: 6px;">
+                <li style="color: #555; margin: 10px 0;"><strong>Step 1:</strong> Find the VM IP address using PowerShell:</li>
+                <li style="color: #555; margin: 8px 0; margin-left: 20px;"><code>ipconfig</code></li>
+                <li style="color: #555; margin: 10px 0;"><strong>Step 2:</strong> Open your browser and visit:</li>
+                <li style="color: #555; margin: 8px 0; margin-left: 20px;"><code>http://&lt;VM-IP-ADDRESS&gt;</code></li>
+                <li style="color: #555; margin: 10px 0;"><strong>Example:</strong> <code>http://192.168.1.50</code></li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h2>Key Features</h2>
             <ul style="list-style: none; margin: 12px 0;">
-                <li style="color: #555; margin: 8px 0;">1. Find the VM IP address: <code style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-family: monospace;">hostname -I</code></li>
-                <li style="color: #555; margin: 8px 0;">2. Open your browser and visit: <code style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-family: monospace;">http://&lt;VM-IP-ADDRESS&gt;</code></li>
-                <li style="color: #555; margin: 8px 0;">3. Example: <code style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-family: monospace;">http://192.168.56.101</code></li>
+                <li style="color: #555; margin: 8px 0;">✓ Enterprise-grade web hosting with IIS</li>
+                <li style="color: #555; margin: 8px 0;">✓ Full Windows Server management capabilities</li>
+                <li style="color: #555; margin: 8px 0;">✓ SSL/TLS certificate support</li>
+                <li style="color: #555; margin: 8px 0;">✓ Active Directory integration ready</li>
+                <li style="color: #555; margin: 8px 0;">✓ .NET Framework and ASP.NET support</li>
+                <li style="color: #555; margin: 8px 0;">✓ Remote Desktop access</li>
             </ul>
         </div>
 
         <div class="links">
-            <a href="https://www.virtualbox.org/wiki/Documentation" target="_blank">VirtualBox Docs</a>
-            <a href="https://nginx.org/" target="_blank">Nginx Documentation</a>
-            <a href="https://ubuntu.com/server/docs" target="_blank">Ubuntu Server Guide</a>
-            <a href="https://ubuntu.com/server/docs/network-configuration" target="_blank">Network Setup</a>
+            <a href="https://docs.microsoft.com/en-us/windows-server/" target="_blank">Windows Server Docs</a>
+            <a href="https://docs.microsoft.com/en-us/iis/" target="_blank">IIS Documentation</a>
+            <a href="https://www.microsoft.com/en-us/windows-server" target="_blank">About Windows Server</a>
+            <a href="https://azure.microsoft.com/" target="_blank">Azure Services</a>
         </div>
 
         <footer>
             <p>Built with passion for learning | Jitendra's Home Lab | 2026</p>
-            <p>Powered by VirtualBox + Nginx + Ubuntu Server</p>
+            <p>Powered by Windows Server + IIS + PowerShell</p>
         </footer>
     </div>
 </body>
