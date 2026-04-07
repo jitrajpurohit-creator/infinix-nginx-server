@@ -162,40 +162,53 @@
 <body>
     <div class="container">
         <h1>Jitendra's Home Lab Server</h1>
-        <p class="subtitle">High-Efficiency Linux Web Server on Windows Hardware</p>
+        <p class="subtitle">Professional Linux Web Server on VirtualBox</p>
 
         <div class="info-section">
             <h2>Server Status: <span class="status">Online</span></h2>
-            <p>This website is powered by <strong>Nginx</strong> running inside <strong>WSL2 (Ubuntu)</strong> on an Intel Core i3 10th Generation processor.</p>
+            <p>This website is powered by <strong>Nginx</strong> running on <strong>Ubuntu Linux</strong> inside <strong>VirtualBox</strong> on an Intel Core i3 10th Generation processor.</p>
         </div>
 
         <div class="specs">
             <h2>System Specifications</h2>
             <ul>
-                <li><strong>Device:</strong> Infinix X1 Laptop</li>
-                <li><strong>Processor:</strong> Intel Core i3 (10th Gen)</li>
-                <li><strong>Memory:</strong> 8GB RAM</li>
-                <li><strong>OS:</strong> Windows 10/11 with WSL 2</li>
-                <li><strong>Linux Distribution:</strong> Ubuntu</li>
+                <li><strong>Host Device:</strong> Infinix X1 Laptop</li>
+                <li><strong>Host Processor:</strong> Intel Core i3 (10th Gen)</li>
+                <li><strong>Host Memory:</strong> 8GB RAM</li>
+                <li><strong>Host OS:</strong> Windows 10/11</li>
+                <li><strong>Virtualization Platform:</strong> VirtualBox</li>
+                <li><strong>Guest OS:</strong> Ubuntu Server 22.04 LTS</li>
+                <li><strong>VM Memory Allocation:</strong> 2GB RAM</li>
                 <li><strong>Web Server:</strong> Nginx</li>
-                <li><strong>RAM Usage:</strong> Less than 1GB</li>
+                <li><strong>Storage:</strong> 20GB dynamic virtual disk</li>
             </ul>
         </div>
 
         <div class="info-section">
             <h2>About This Project</h2>
-            <p>This home lab demonstrates how to build a professional web server environment without cloud providers or heavy virtual machines. Using WSL 2 provides a real Linux kernel while maintaining excellent performance on modest hardware.</p>
+            <p>This home lab demonstrates how to build a professional web server environment using VirtualBox virtualization. The VM provides complete control over network configuration, storage, and system resources while maintaining efficient performance on modest hardware.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>Network Access</h2>
+            <p><strong>To access this website from your host machine:</strong></p>
+            <ul style="list-style: none; margin: 12px 0;">
+                <li style="color: #555; margin: 8px 0;">1. Find the VM IP address: <code style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-family: monospace;">hostname -I</code></li>
+                <li style="color: #555; margin: 8px 0;">2. Open your browser and visit: <code style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-family: monospace;">http://&lt;VM-IP-ADDRESS&gt;</code></li>
+                <li style="color: #555; margin: 8px 0;">3. Example: <code style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-family: monospace;">http://192.168.56.101</code></li>
+            </ul>
         </div>
 
         <div class="links">
-            <a href="https://docs.microsoft.com/en-us/windows/wsl/" target="_blank">Learn about WSL 2</a>
+            <a href="https://www.virtualbox.org/wiki/Documentation" target="_blank">VirtualBox Docs</a>
             <a href="https://nginx.org/" target="_blank">Nginx Documentation</a>
             <a href="https://ubuntu.com/server/docs" target="_blank">Ubuntu Server Guide</a>
+            <a href="https://ubuntu.com/server/docs/network-configuration" target="_blank">Network Setup</a>
         </div>
 
         <footer>
             <p>Built with passion for learning | Jitendra's Home Lab | 2026</p>
-            <p>Powered by WSL 2 + Nginx + Ubuntu</p>
+            <p>Powered by VirtualBox + Nginx + Ubuntu Server</p>
         </footer>
     </div>
 </body>

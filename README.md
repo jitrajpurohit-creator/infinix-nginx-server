@@ -1,12 +1,12 @@
-# Building a High-Efficiency Linux Home Lab on Windows
+# Building a High-Efficiency Linux Home Lab
 
-**Subtitle:** How I turned my Infinix X1 into a Web Server using WSL 2 and Nginx
+**Subtitle:** Running a Professional Web Server on VirtualBox with Nginx
 
 ---
 
 ## 1. The Goal (The "Why")
 
-I wanted to learn Linux and Web Server management without the complexity of cloud providers (like [Oracle Cloud](https://www.oracle.com/cloud/) or [AWS](https://aws.amazon.com/)) or the heavy RAM usage of traditional Virtual Machines. My goal was to host a local website on my own hardware while gaining hands-on experience with Linux system administration.
+I wanted to learn Linux and Web Server management without the complexity of cloud providers (like [Oracle Cloud](https://www.oracle.com/cloud/) or [AWS](https://aws.amazon.com/)). My goal was to host a local website on my own hardware while gaining hands-on experience with Linux system administration, virtualization, and networking.
 
 ---
 
@@ -15,115 +15,234 @@ I wanted to learn Linux and Web Server management without the complexity of clou
 - **Device:** Infinix X1 Laptop
 - **Processor:** Intel Core i3 (10th Generation)
 - **Memory:** 8GB RAM
-- **Operating System:** Windows 10/11 with [WSL 2](https://docs.microsoft.com/en-us/windows/wsl/) (Ubuntu)
+- **Host OS:** Windows 10/11
+- **Virtualization:** [VirtualBox](https://www.virtualbox.org/)
+- **Guest OS:** Ubuntu Linux (20.04 LTS or newer)
 
 ---
 
 ## 3. The Implementation (The "How")
 
-I chose [WSL 2 (Windows Subsystem for Linux)](https://docs.microsoft.com/en-us/windows/wsl/about) because it provides a real Linux kernel while sharing system resources efficiently—perfect for low-overhead development and server hosting.
+I chose [VirtualBox](https://www.virtualbox.org/) as a flexible virtualization platform that provides full Linux environment with networking capabilities. This allows complete control over system resources and networking configuration.
 
 ### Key Steps Taken:
 
-#### Hardware Optimization
-- Enabled **Virtualization Technology (VT-x)** in the BIOS
-- Enabled Windows features: Virtual Machine Platform and Windows Subsystem for Linux
-- This allows the i3 processor to efficiently run two operating systems simultaneously
+#### Host Machine Preparation
+1. Enable **Virtualization Technology (VT-x)** in BIOS:
+   - Restart computer and enter BIOS/UEFI
+   - Find CPU virtualization settings (varies by motherboard)
+   - Enable VT-x or AMD-V
+   - Save and exit
 
-#### Environment Setup
-1. Installed Ubuntu via PowerShell:
-   ```powershell
-   wsl --install
-   ```
-2. Verified installation:
-   ```bash
-   wsl -l -v
-   ```
+2. Download and install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
-#### Server Deployment
-1. Updated the package manager:
+#### VirtualBox Virtual Machine Setup
+1. Create a new virtual machine:
+   - Name: `HomeLabServer`
+   - Type: Linux
+   - Version: Ubuntu (64-bit)
+   - Memory: 2GB RAM (minimum)
+   - Storage: 20GB dynamic allocation
+
+2. Network Configuration:
+   - **Adapter 1:** NAT (for internet access)
+   - **Adapter 2:** Host-Only (for local network access)
+
+3. Install Ubuntu:
+   - Download [Ubuntu Server 22.04 LTS](https://ubuntu.com/download/server)
+   - Mount ISO and complete installation
+
+#### Server Deployment on VirtualBox
+1. Update system packages:
    ```bash
    sudo apt update && sudo apt upgrade -y
    ```
-2. Installed [Nginx Web Server](https://nginx.org/):
+
+2. Install [Nginx Web Server](https://nginx.org/):
    ```bash
    sudo apt install nginx -y
    ```
-3. Started the service:
+
+3. Start and enable Nginx:
    ```bash
-   sudo service nginx start
-   ```
-4. Verified the server status:
-   ```bash
-   sudo service nginx status
+   sudo systemctl start nginx
+   sudo systemctl enable nginx
    ```
 
-#### Customization
-- Modified the default HTML index file (`/var/www/html/index.html`) to display a custom personalized message
-- Configured Nginx to serve the custom website
+4. Verify service status:
+   ```bash
+   sudo systemctl status nginx
+   ```
+
+#### Website Deployment
+1. Copy the website files to Nginx:
+   ```bash
+   sudo cp index.html /var/www/html/index.html
+   sudo chown www-data:www-data /var/www/html/index.html
+   ```
+
+2. Configure Nginx (optional):
+   ```bash
+   sudo nano /etc/nginx/sites-available/default
+   ```
+
+3. Test Nginx configuration:
+   ```bash
+   sudo nginx -t
+   ```
+
+4. Reload Nginx:
+   ```bash
+   sudo systemctl reload nginx
+   ```
 
 ---
 
-## 4. Challenges & Solutions
+## 4. Networking & Access
 
-### Challenge
-Encountered a **"Catastrophic Failure"** during the initial WSL installation, preventing Ubuntu from launching.
+### Finding Your VM's IP Address
+```bash
+hostname -I
+```
+or
+```bash
+ip addr show
+```
 
-### Solution
-1. Manually enabled the **Virtual Machine Platform** feature in Windows:
-   ```powershell
-   dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-   ```
-2. Set the hypervisor launch type to `auto` via BCDedit:
-   ```powershell
-   bcdedit /set hypervisorlaunchtype auto
-   ```
-3. Restarted the system to apply changes
-4. This cleared the communication block between the CPU virtualization and Windows Hypervisor
+### Accessing the Website
+- **From Host Machine:** Open a browser and navigate to:
+  - `http://<VM-IP-ADDRESS>` (e.g., `http://192.168.56.101`)
+  - Replace `<VM-IP-ADDRESS>` with the IP from the command above
+
+- **From Guest Machine:** `http://localhost`
+
+### Network Adapter Types
+- **NAT:** VM can access the internet through host
+- **Host-Only:** VM can communicate with host machine directly
+- **Bridged:** VM gets its own IP on the host network
 
 ---
 
-## 5. Results
+## 5. Troubleshooting Common Issues
 
-I now have a fully functional [Nginx](https://nginx.org/) web server accessible at `http://localhost`.
+### Issue: Cannot Access Website from Host
+**Solution:**
+1. Check Nginx is running:
+   ```bash
+   sudo systemctl status nginx
+   ```
+2. Check VM IP address:
+   ```bash
+   hostname -I
+   ```
+3. Verify firewall allows port 80:
+   ```bash
+   sudo ufw allow 80/tcp
+   sudo ufw allow 22/tcp
+   ```
+
+### Issue: SSH Connection from Host
+**Solution:**
+1. Install SSH server on VM:
+   ```bash
+   sudo apt install openssh-server -y
+   ```
+2. Start SSH service:
+   ```bash
+   sudo systemctl start ssh
+   ```
+3. Connect from host:
+   ```bash
+   ssh username@192.168.56.101
+   ```
+
+### Issue: Slow Performance
+**Solution:**
+1. Increase VM allocated resources
+2. Enable 3D acceleration in VirtualBox settings
+3. Install VirtualBox Guest Additions:
+   ```bash
+   sudo apt install virtualbox-guest-additions-iso
+   ```
+
+---
+
+## 6. Results
+
+I now have a fully functional [Nginx](https://nginx.org/) web server running on VirtualBox with professional deployment capabilities.
 
 ### Performance Metrics:
-- **Startup Time:** ~2 seconds
-- **RAM Usage:** Less than 1GB (compared to 2-4GB for traditional VMs)
+- **Startup Time:** ~10-15 seconds
+- **RAM Usage:** 512MB - 1.5GB (configurable)
 - **Response Time:** Near-instant for local requests
-- **Professional terminal:** Full Ubuntu environment with access to package managers and Linux tools
+- **Network Access:** Full control and configuration capabilities
+- **Professional environment:** Complete Ubuntu server with all development tools
 
 ---
 
-## 6. What I Learned
+## 7. What I Learned
 
-- How to configure and troubleshoot WSL 2 on Windows
+- How to set up and configure VirtualBox virtual machines
 - Linux system administration basics (package management, service control)
 - Web server configuration and deployment with Nginx
+- Virtual network configuration and networking protocols
 - BIOS-level virtualization settings
-- Windows Hypervisor architecture and troubleshooting
+- File transfer between host and guest systems
 
 ---
 
-## 7. Next Steps
+## 8. Next Steps
 
 - [ ] Configure custom domain mapping with hosts file
 - [ ] Set up SSL/TLS certificates for HTTPS
 - [ ] Deploy a dynamic web application (Node.js, Python Flask, or PHP)
 - [ ] Implement reverse proxy configuration
-- [ ] Explore Docker containerization on WSL 2
+- [ ] Set up automated backups of VM snapshots
+- [ ] Configure port forwarding for external access
+- [ ] Deploy Docker containers on the VM
+
+---
+
+## VirtualBox Quick Reference
+
+### VM Lifecycle Commands
+```bash
+# Start VM
+VBoxManage startvm "HomeLabServer" --type headless
+
+# Stop VM gracefully
+VBoxManage controlvm "HomeLabServer" poweroff
+
+# Pause VM
+VBoxManage controlvm "HomeLabServer" pause
+
+# Resume VM
+VBoxManage controlvm "HomeLabServer" resume
+```
+
+### Create VM Snapshot
+```bash
+VBoxManage snapshot "HomeLabServer" take "backup-$(date +%Y%m%d)"
+```
+
+### List VMs
+```bash
+VBoxManage list vms
+```
 
 ---
 
 ## Useful Resources
 
-- [WSL 2 Documentation](https://docs.microsoft.com/en-us/windows/wsl/)
-- [Nginx Beginner's Guide](https://nginx.org/en/docs/beginners_guide.html)
+- [VirtualBox Documentation](https://www.virtualbox.org/wiki/Documentation)
 - [Ubuntu Server Guide](https://ubuntu.com/server/docs)
+- [Nginx Beginner's Guide](https://nginx.org/en/docs/beginners_guide.html)
+- [Linux Network Configuration](https://ubuntu.com/server/docs/network-configuration)
 - [DigitalOcean Nginx Tutorials](https://www.digitalocean.com/community/tags/nginx)
 
 ---
 
 **Author:** Jitendra
 **Project Date:** 2026
+**Platform:** VirtualBox on Windows
 **Status:** Active and Running
