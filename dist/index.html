@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathtoIT - Home Lab Server</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0d1b2a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(0, 188, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 100, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 188, 255, 0.2);
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(0, 188, 255, 0.1);
+            max-width: 900px;
+            width: 100%;
+            padding: 48px;
+            animation: fadeIn 0.8s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid rgba(0, 188, 255, 0.2);
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 188, 255, 0.3);
+            border: 2px solid rgba(0, 188, 255, 0.3);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .header-text h1 {
+            color: #00bcff;
+            font-size: 28px;
+            margin-bottom: 4px;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(0, 188, 255, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .header-text p {
+            color: #8a9baf;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            color: #00bcff;
+            font-size: 18px;
+            margin-bottom: 32px;
+            padding: 16px;
+            background: rgba(0, 188, 255, 0.05);
+            border-left: 4px solid #00bcff;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .info-section {
+            margin-bottom: 28px;
+        }
+
+        .info-section h2 {
+            color: #00bcff;
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(0, 188, 255, 0.3);
+        }
+
+        .info-section p {
+            color: #c4cfe0;
+            margin-bottom: 8px;
+            line-height: 1.8;
+        }
+
+        .specs {
+            background: rgba(0, 188, 255, 0.03);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 24px 0;
+            border-left: 4px solid #ff0064;
+            border: 1px solid rgba(0, 188, 255, 0.15);
+        }
+
+        .specs ul {
+            list-style: none;
+        }
+
+        .specs li {
+            padding: 8px 0;
+            color: #b0bfcf;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+
+        .specs li:hover {
+            color: #00bcff;
+        }
+
+        .specs li:before {
+            content: "◆";
+            color: #ff0064;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, rgba(0, 188, 255, 0.2) 0%, rgba(255, 0, 100, 0.1) 100%);
+            color: #00bcff;
+            border: 1px solid rgba(0, 188, 255, 0.3);
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: linear-gradient(135deg, rgba(0, 188, 255, 0.3) 0%, rgba(255, 0, 100, 0.2) 100%);
+            border-color: #00bcff;
+            box-shadow: 0 0 15px rgba(0, 188, 255, 0.3);
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 12px 0;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #00bcff 0%, #0088ff 100%);
+            color: #0a0e27;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(0, 188, 255, 0.5);
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #00bcff;
+            font-size: 13px;
+            border: 1px solid rgba(0, 188, 255, 0.2);
+        }
+
+        .links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .links a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #00bcff 0%, #0088ff 100%);
+            color: #0a0e27;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 188, 255, 0.3);
+        }
+
+        .links a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 188, 255, 0.5);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .feature-item {
+            background: rgba(0, 188, 255, 0.03);
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 188, 255, 0.1);
+            color: #b0bfcf;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            border-color: #ff0064;
+            background: rgba(255, 0, 100, 0.05);
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(0, 188, 255, 0.1);
+            text-align: center;
+            color: #7a8ba3;
+            font-size: 14px;
+        }
+
+        footer p {
+            margin: 4px 0;
+        }
+
+        .company-credit {
+            color: #00bcff;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 32px 24px;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-text h1 {
+                font-size: 24px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .specs li {
+                flex-wrap: wrap;
+            }
+
+            .links {
+                flex-direction: column;
+            }
+
+            .links a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="/assets/PathtoITwall_(1)-_Z1EeSbp.png" alt="PathtoIT Logo">
+            </div>
+            <div class="header-text">
+                <h1>PathtoIT</h1>
+                <p>Home Lab Server - Enterprise Infrastructure</p>
+            </div>
+        </div>
+
+        <p class="subtitle">Professional Windows Server with IIS Web Hosting</p>
+
+        <div class="info-section">
+            <h2>Server Status: <span class="status">Online</span></h2>
+            <p>This website is hosted on <strong>Internet Information Services (IIS)</strong> running on <strong>Windows Server</strong> inside a virtual machine. Powered by PathtoIT infrastructure expertise.</p>
+        </div>
+
+        <div class="specs">
+            <h2>System Specifications</h2>
+            <ul>
+                <li><strong>Host Device:</strong> Infinix X1 Laptop</li>
+                <li><strong>Host Processor:</strong> Intel Core i3 (10th Generation)</li>
+                <li><strong>Host Memory:</strong> 8GB RAM</li>
+                <li><strong>Host OS:</strong> Windows Server</li>
+                <li><strong>Virtual Machine:</strong> Windows Server 2019/2022</li>
+                <li><strong>VM Memory:</strong> 2GB RAM (allocated)</li>
+                <li><strong>Web Server:</strong> IIS (Internet Information Services)</li>
+                <li><strong>Storage:</strong> 40GB dynamic virtual disk</li>
+                <li><strong>.NET Framework:</strong> 4.8+</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h2>Technology Stack</h2>
+            <div class="tech-stack">
+                <span class="badge">Windows Server</span>
+                <span class="badge">IIS</span>
+                <span class="badge">PowerShell</span>
+                <span class="badge">HTML5</span>
+                <span class="badge">CSS3</span>
+                <span class="badge">Hyper-V</span>
+                <span class="badge">Virtualization</span>
+                <span class="badge">Enterprise</span>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>About This Project</h2>
+            <p>This home lab demonstrates enterprise-grade web server hosting using Windows Server and IIS. Built with PathtoIT's dedication to professional infrastructure, the solution showcases advanced web hosting capabilities with Active Directory integration, security features, and enterprise scalability.</p>
+        </div>
+
+        <div class="info-section">
+            <h2>Network Access</h2>
+            <p><strong>To access this website from your host machine:</strong></p>
+            <div class="features-grid" style="margin: 16px 0;">
+                <div class="feature-item"><strong>Step 1:</strong> Find VM IP with: <code>ipconfig</code></div>
+                <div class="feature-item"><strong>Step 2:</strong> Visit: <code>http://&lt;VM-IP&gt;</code></div>
+                <div class="feature-item"><strong>Example:</strong> <code>http://192.168.1.50</code></div>
+                <div class="feature-item"><strong>Local Access:</strong> <code>http://localhost</code></div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">✓ Enterprise-grade IIS Hosting</div>
+                <div class="feature-item">✓ Windows Server Management</div>
+                <div class="feature-item">✓ SSL/TLS Certificates</div>
+                <div class="feature-item">✓ Active Directory Ready</div>
+                <div class="feature-item">✓ .NET & ASP.NET Support</div>
+                <div class="feature-item">✓ Remote Desktop Access</div>
+            </div>
+        </div>
+
+        <div class="links">
+            <a href="https://docs.microsoft.com/en-us/windows-server/" target="_blank">Windows Server Docs</a>
+            <a href="https://docs.microsoft.com/en-us/iis/" target="_blank">IIS Documentation</a>
+            <a href="https://www.microsoft.com/en-us/windows-server" target="_blank">About Windows Server</a>
+            <a href="https://azure.microsoft.com/" target="_blank">Azure Services</a>
+        </div>
+
+        <footer>
+            <p>Built with PathtoIT Infrastructure Excellence | Jitendra's Home Lab | 2026</p>
+            <p>Powered by Windows Server + IIS + PowerShell</p>
+            <p class="company-credit">PathtoIT - Your Path to IT Excellence</p>
+        </footer>
+    </div>
+</body>
+</html>
